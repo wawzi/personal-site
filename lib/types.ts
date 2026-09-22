@@ -90,3 +90,29 @@ export interface RingSite {
   name: string;
   href: string;
 }
+
+/* ── The private wing ────────────────────────────────────── */
+
+export interface Note {
+  id: string;
+  user_id: string;
+  title: string;
+  body: string;
+  tags: string[];
+  pinned: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DiaryEntry {
+  id: string;
+  user_id: string;
+  /** When the entry is about — editable, unlike created_at. */
+  entry_at: string;
+  title: string;
+  body: string;
+  mood: string | null;
+  weather: string | null;
+  created_at: string;
+  updated_at: string;
+}

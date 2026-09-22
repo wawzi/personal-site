@@ -33,8 +33,18 @@ lib/
 public/plates/    generated placeholder images
 ```
 
+## Setup
+
+1. Copy `.env.example` to `.env.local` and fill in the two values from
+   Supabase → Project Settings → API keys. Both are public by design;
+   never add the secret / service_role key.
+2. Run `supabase/migrations/0001_private_wing.sql` in the Supabase SQL
+   editor. It is idempotent.
+3. Create your user: Supabase → Authentication → Users → Add user.
+   There is no public sign-up route.
+
 ## Status
 
-The public hub is built and runs on seed content. Authentication, the
-diary, notes and the Codex are not started. See `CLAUDE.md` for the phase
-plan and the decisions taken so far.
+The public hub runs on seed content. The private wing — sign-in, diary
+and notes — is built against Supabase. The Codex is not started. See
+`CLAUDE.md` for the phase plan and the decisions taken so far.

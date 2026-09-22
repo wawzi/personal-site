@@ -15,7 +15,7 @@ future session needs to know about intent belongs here, not in chat.
 |---|---|---|
 | 0 | Scaffold, design system, fonts, theming | **done** |
 | 1 | Public hub — home, blog, books, gallery, codex, about | **done (seed data)** |
-| 2 | Auth, diary (dated entries), notes CRUD | not started |
+| 2 | Auth, diary (dated entries), notes CRUD | **code complete — unverified against the live database** |
 | 3 | The Codex — articles, timelines, calendars, historical events, maps + metadata, manuscripts, secrets | not started |
 | 4 | Content trees, interactive tables, whiteboards (tldraw) | not started |
 
@@ -39,10 +39,20 @@ future session needs to know about intent belongs here, not in chat.
 - **Theming is token-driven.** Components never write `dark:` variants —
   they use semantic colours (`bg-paper`, `text-ink`, `border-rule`,
   `text-brass`) whose values swap in `globals.css`. Keep it that way.
-- **Database: undecided.** The owner knows Firebase; Firestore is a poor
-  fit for the Codex's graph-shaped data and has no full-text search.
-  Supabase (Postgres + auth + storage) is the standing recommendation.
-  Nothing in the codebase depends on the answer yet.
+- **Database: Supabase** (Postgres + auth + storage), chosen in Phase 2.
+  Client setup lives in `lib/supabase/`. Migrations are plain SQL in
+  `supabase/migrations/`, run by hand in the Supabase SQL editor.
+
+- **Security posture.** The publishable key is public by design and ships
+  to the browser. **Row Level Security is the only thing protecting the
+  data.** Every table must have RLS enabled and an owner-scoped policy
+  before it holds anything real. A table without RLS is readable by anyone
+  who views source. The secret / service_role key must never enter this
+  codebase.
+
+- **Reads do not filter by `user_id`.** RLS scopes rows at the database.
+  Adding a redundant filter in the query would mask a missing policy
+  rather than defend against one.
 
 ## Conventions
 
@@ -66,6 +76,19 @@ future session needs to know about intent belongs here, not in chat.
 - The theme toggle is deliberately stateless — both icons render and CSS
   picks one (`.only-day` / `.only-night`). Do not reintroduce mount state;
   it causes hydration mismatch and an icon flash.
+
+## Auth
+
+- Sign-in is email + password via Supabase Auth. There is no sign-up
+  route: the single user is created in the Supabase dashboard.
+- `/enter` is the unlisted entrance, `/desk/**` is the private wing. Both
+  carry `robots: noindex, nofollow` and neither is linked from anywhere
+  public. Keep it that way.
+- `middleware.ts` refreshes the session on every request and guards
+  `/desk`. It uses `getUser()`, which revalidates against the auth server
+  — **never swap it for `getSession()`**, which trusts the cookie blind.
+- When Supabase is unreachable the site **fails closed**: public pages
+  still render, `/desk` redirects to `/enter`. Verified. Preserve that.
 
 ## Checks before committing
 
