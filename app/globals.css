@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────
+   THE ANTIQUARIAN DESIGN SYSTEM
+   Warm paper, iron-gall ink, brass fittings, oxblood leather.
+   All colour is expressed as semantic tokens so that the whole
+   site inverts to "night library" without per-component work.
+   ─────────────────────────────────────────────────────────── */
+
+:root {
+  /* Surfaces — aged paper */
+  --paper:        #f3ecde;
+  --leaf:         #faf5ea;
+  --leaf-sunk:    #ebe2d0;
+
+  /* Ink */
+  --ink:          #241e17;
+  --ink-soft:     #574b3c;
+  --ink-faint:    #8b7c68;
+
+  /* Rules & fittings */
+  --rule:         #d8ccb4;
+  --rule-strong:  #bcab8c;
+
+  /* Accents */
+  --brass:        #9a7736;
+  --brass-bright: #b8933f;
+  --oxblood:      #7c2f2a;
+
+  --shadow-plate: 0 1px 2px rgb(36 30 23 / 0.06),
+                  0 8px 24px -12px rgb(36 30 23 / 0.18);
+}
+
+/* Night library — oiled leather, candle-brass, bone-white ink */
+:root[data-theme="dark"] {
+  --paper:        #14110d;
+  --leaf:         #1c1813;
+  --leaf-sunk:    #100e0a;
+
+  --ink:          #ece2cd;
+  --ink-soft:     #b3a68d;
+  --ink-faint:    #7d7160;
+
+  --rule:         #362f26;
+  --rule-strong:  #4d4335;
+
+  --brass:        #c7a35c;
+  --brass-bright: #dcb86c;
+  --oxblood:      #b04f46;
+
+  --shadow-plate: 0 1px 2px rgb(0 0 0 / 0.5),
+                  0 8px 28px -12px rgb(0 0 0 / 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:        #14110d;
+    --leaf:         #1c1813;
+    --leaf-sunk:    #100e0a;
+
+    --ink:          #ece2cd;
+    --ink-soft:     #b3a68d;
+    --ink-faint:    #7d7160;
+
+    --rule:         #362f26;
+    --rule-strong:  #4d4335;
+
+    --brass:        #c7a35c;
+    --brass-bright: #dcb86c;
+    --oxblood:      #b04f46;
+
+    --shadow-plate: 0 1px 2px rgb(0 0 0 / 0.5),
+                    0 8px 28px -12px rgb(0 0 0 / 0.7);
+  }
+}
+
+@theme inline {
+  --color-paper:        var(--paper);
+  --color-leaf:         var(--leaf);
+  --color-leaf-sunk:    var(--leaf-sunk);
+  --color-ink:          var(--ink);
+  --color-ink-soft:     var(--ink-soft);
+  --color-ink-faint:    var(--ink-faint);
+  --color-rule:         var(--rule);
+  --color-rule-strong:  var(--rule-strong);
+  --color-brass:        var(--brass);
+  --color-brass-bright: var(--brass-bright);
+  --color-oxblood:      var(--oxblood);
+
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-body:    var(--font-garamond), Georgia, serif;
+  --font-meta:    var(--font-plex-mono), ui-monospace, monospace;
+}
+
+/* ─── Base ─────────────────────────────────────────────── */
+
+* { border-color: var(--rule); }
+
+html {
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  font-feature-settings: "kern", "liga", "onum";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Laid-paper tooth: two hairline gratings at opposing angles,
+   plus a faint vignette. Cheap, no image request, invisible
+   until you look for it. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(
+      94deg,
+      transparent 0 3px,
+      color-mix(in oklab, var(--ink) 2.5%, transparent) 3px 4px
+    ),
+    repeating-linear-gradient(
+      2deg,
+      transparent 0 7px,
+      color-mix(in oklab, var(--ink) 1.5%, transparent) 7px 8px
+    );
+}
+
+:root[data-theme="dark"] body::before { opacity: 0.32; }
+
+::selection {
+  background: color-mix(in oklab, var(--brass) 28%, transparent);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ─── Typographic utilities ────────────────────────────── */
+
+.font-display { font-family: var(--font-display); }
+.font-meta    { font-family: var(--font-meta); }
+
+/* Small-caps catalogue label — the spine of the whole system */
+.label {
+  font-family: var(--font-meta);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+
+/* Engraved-plate drop cap for opening paragraphs */
+.dropcap::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-size: 4.25rem;
+  line-height: 0.82;
+  padding: 0.08em 0.1em 0 0;
+  margin-right: 0.04em;
+  color: var(--oxblood);
+  font-weight: 600;
+}
+
+/* ─── Ornaments ────────────────────────────────────────── */
+
+/* Double rule: thick over thin, as on a title page */
+.rule-double {
+  border: 0;
+  border-top: 2px solid var(--rule-strong);
+  border-bottom: 1px solid var(--rule);
+  height: 4px;
+}
+
+.link-underline {
+  background-image: linear-gradient(var(--brass), var(--brass));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover { background-size: 100% 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Theme-conditional display ────────────────────────────
+   Lets a control render both states and let CSS choose, so no
+   component needs mount state to know the current theme. */
+
+.only-day   { display: inline; }
+.only-night { display: none; }
+
+:root[data-theme="dark"] .only-day   { display: none; }
+:root[data-theme="dark"] .only-night { display: inline; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .only-day   { display: none; }
+  :root:not([data-theme="light"]) .only-night { display: inline; }
+}
