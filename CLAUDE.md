@@ -14,7 +14,7 @@ future session needs to know about intent belongs here, not in chat.
 | Phase | Scope | State |
 |---|---|---|
 | 0 | Scaffold, design system, fonts, theming | **done** |
-| 1 | Public hub — home, shelf, writings, plates, recommendations | **done (seed data)** |
+| 1 | Public hub — home, blog, books, gallery, codex, about | **done (seed data)** |
 | 2 | Auth, diary (dated entries), notes CRUD | not started |
 | 3 | The Codex — articles, timelines, calendars, historical events, maps + metadata, manuscripts, secrets | not started |
 | 4 | Content trees, interactive tables, whiteboards (tldraw) | not started |
@@ -22,9 +22,20 @@ future session needs to know about intent belongs here, not in chat.
 ## Decisions made
 
 - **Next.js 16 (App Router) + React 19 + TypeScript + Tailwind v4.**
-- **Aesthetic: antiquarian library.** Warm paper and iron-gall ink by day,
-  oiled leather and candle-brass by night. Cormorant Garamond (display),
-  EB Garamond (body), IBM Plex Mono (catalogue matter).
+- **Aesthetic: the old personal homepage, done cleanly.** Web rings,
+  guestbook, status and now-playing widgets, a hit counter, 88x31 buttons,
+  a scrolling ticker — the indie-web vocabulary, executed with restraint
+  rather than tiled backgrounds. Dense and characterful, never corporate.
+  Warm cream and bronze by day, dark leather and candle-brass by night.
+  Cormorant Garamond (display), EB Garamond (body), IBM Plex Mono (labels).
+
+  **An earlier build read as a literary journal** — one long page, airy,
+  quiet. That was the wrong target and was replaced. If a change starts
+  making the site feel like a brochure, it is going the wrong way.
+
+- **Multi-page, not one scroll.** Every section is its own route and every
+  route is listed in the always-visible section nav (`lib/nav.ts`). Do not
+  collapse sections back onto the home page.
 - **Theming is token-driven.** Components never write `dark:` variants —
   they use semantic colours (`bg-paper`, `text-ink`, `border-rule`,
   `text-brass`) whose values swap in `globals.css`. Keep it that way.
@@ -44,7 +55,14 @@ future session needs to know about intent belongs here, not in chat.
 - Placeholder plates in `public/plates/` are generated SVGs, not real
   photographs. They go when uploads land.
 - Server components by default; `"use client"` only where interaction
-  genuinely requires it (currently the gallery and the theme toggle).
+  genuinely requires it (currently the gallery, the theme toggle, and the
+  section nav, which needs `usePathname`).
+- `Panel` is the basic layout unit — a bordered box with a labelled title
+  bar. Side-rail widgets live in `components/widgets/`, site chrome in
+  `components/chrome/`.
+- Body type is set small (0.9375rem) on purpose. This layout wants density.
+- Display numerals need the `.lining` class; the body default is old-style
+  figures, which read as letters at large sizes.
 - The theme toggle is deliberately stateless — both icons render and CSS
   picks one (`.only-day` / `.only-night`). Do not reintroduce mount state;
   it causes hydration mismatch and an icon flash.
@@ -62,3 +80,8 @@ npx tsc --noEmit && npx eslint . && npm run build
   nav and out of the sitemap.
 - Writings entries render as records, not links; article pages arrive with
   the database.
+- The guestbook and the visitor counter are **shells**. Both are labelled
+  in the UI as not yet wired and both need somewhere to persist. Do not
+  fake either with client-side state.
+- `/codex` is the public lobby for the worldbuilding wing. The editors and
+  the private material go behind the login in Phase 3.

@@ -57,3 +57,36 @@ export interface Plate {
   width: number;
   height: number;
 }
+
+/* ── Homepage furniture ──────────────────────────────────── */
+
+export interface SiteStatus {
+  /** One word for the top line, e.g. "writing", "reading", "away". */
+  state: string;
+  mood?: string;
+  weather?: string;
+  vibe?: string;
+}
+
+export interface NowPlaying {
+  track: string;
+  source: string;
+}
+
+export interface CurrentlyItem {
+  label: string;
+  value: string;
+}
+
+export interface SiteUpdate {
+  id: string;
+  /** Free text, not a strict date — "Aug 2026", "last night". */
+  when: string;
+  text: string;
+  tag?: string;
+}
+
+export interface RingSite {
+  name: string;
+  href: string;
+}

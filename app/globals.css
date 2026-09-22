@@ -105,8 +105,8 @@ body {
   background-color: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-size: 0.9375rem;
+  line-height: 1.6;
   font-feature-settings: "kern", "liga", "onum";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -216,4 +216,114 @@ body::before {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .only-day   { display: none; }
   :root:not([data-theme="light"]) .only-night { display: inline; }
+}
+
+
+/* ─── Panels ───────────────────────────────────────────────
+   The workhorse of the old personal-homepage layout: a boxed
+   module with a labelled title bar. Everything in the side
+   rails is one of these. */
+
+.panel {
+  border: 1px solid var(--rule-strong);
+  background: var(--leaf);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border-bottom: 1px solid var(--rule-strong);
+  background: var(--leaf-sunk);
+}
+
+.panel-head .label { color: var(--ink-soft); }
+.ticker .label   { color: var(--paper); }
+
+.panel-body { padding: 0.7rem; }
+
+/* Inset well for list rows inside a panel */
+.well {
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+/* Chunky action button, square-cornered on purpose */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.75rem;
+  border: 1px solid var(--rule-strong);
+  background: var(--leaf-sunk);
+  font-family: var(--font-meta);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: background-color 140ms, color 140ms, border-color 140ms;
+}
+.btn:hover {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--paper);
+}
+.btn-solid {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--paper);
+}
+.btn-solid:hover {
+  background: var(--brass-bright);
+  border-color: var(--brass-bright);
+}
+
+/* ─── Marquee ──────────────────────────────────────────────
+   The one genuinely old-web motif worth keeping. Duplicated
+   track so the loop is seamless; pauses on hover and stops
+   entirely for reduced-motion. */
+
+.ticker { overflow: hidden; white-space: nowrap; }
+
+.ticker-track {
+  display: inline-flex;
+  align-items: center;
+  animation: ticker-scroll 42s linear infinite;
+}
+.ticker:hover .ticker-track { animation-play-state: paused; }
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+
+/* Classic 88x31 button plate */
+.badge-88 {
+  width: 88px;
+  height: 31px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule-strong);
+  font-family: var(--font-meta);
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.1;
+  padding: 0 3px;
+}
+
+/* Lining figures for display numerals — the body default is
+   old-style (onum), which reads as letters at large sizes. */
+.lining {
+  font-feature-settings: "kern", "liga", "lnum";
+  font-variant-numeric: lining-nums;
 }

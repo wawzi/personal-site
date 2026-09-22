@@ -37,7 +37,7 @@ export async function WritingsList() {
               </p>
               <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-1">
                 {w.tags.map((tag) => (
-                  <li key={tag} className="label text-[0.625rem]">
+                  <li key={tag} className="label border border-rule px-1.5 py-0.5 text-[0.625rem]">
                     {tag}
                   </li>
                 ))}

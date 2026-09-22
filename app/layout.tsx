@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, EB_Garamond, IBM_Plex_Mono } from "next/font/google";
+import { SiteFooter } from "@/components/chrome/site-footer";
+import { SiteHeader } from "@/components/chrome/site-header";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -61,7 +63,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="relative min-h-full flex flex-col">
         <div className="relative z-10 flex min-h-full flex-1 flex-col">
-          {children}
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
         </div>
       </body>
     </html>

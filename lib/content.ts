@@ -214,3 +214,65 @@ export async function getPlates(): Promise<Plate[]> {
 export async function getCollections(): Promise<string[]> {
   return [...new Set(plates.map((p) => p.collection))].sort();
 }
+
+/* ── Homepage furniture ──────────────────────────────────── */
+
+import type {
+  CurrentlyItem,
+  NowPlaying,
+  RingSite,
+  SiteStatus,
+  SiteUpdate,
+} from "./types";
+
+const status: SiteStatus = {
+  state: "writing",
+  mood: "caffeinated, stubborn",
+  weather: "grey, threatening rain",
+  vibe: "chapter four is not working",
+};
+
+const nowPlaying: NowPlaying = {
+  track: "Rain on a Tin Roof",
+  source: "some lo-fi channel, hour six",
+};
+
+const currently: CurrentlyItem[] = [
+  { label: "Reading", value: "Ficciones — Borges" },
+  { label: "Watching", value: "nothing, honestly" },
+  { label: "Building", value: "the Codex, slowly" },
+  { label: "Stuck on", value: "a map projection problem" },
+];
+
+const updates: SiteUpdate[] = [
+  { id: "u-4", when: "this week", text: "Rebuilt the whole front end. Again. It looks like a website now instead of a brochure.", tag: "building" },
+  { id: "u-3", when: "Sep 2026", text: "Added the shelf. Backfilled everything I read this year from memory, so some dates are lies." },
+  { id: "u-2", when: "Aug 2026", text: "Bought the domain. Stared at it for three weeks.", tag: "milestone" },
+  { id: "u-1", when: "Aug 2026", text: "Decided the novel needed a wiki more than it needed another outline." },
+];
+
+const ring: RingSite[] = [
+  { name: "prev", href: "#" },
+  { name: "hub", href: "#" },
+  { name: "next", href: "#" },
+];
+
+export async function getStatus(): Promise<SiteStatus> {
+  return status;
+}
+
+export async function getNowPlaying(): Promise<NowPlaying> {
+  return nowPlaying;
+}
+
+export async function getCurrently(): Promise<CurrentlyItem[]> {
+  return currently;
+}
+
+export async function getUpdates(): Promise<SiteUpdate[]> {
+  return updates;
+}
+
+export async function getRing(): Promise<RingSite[]> {
+  return ring;
+}

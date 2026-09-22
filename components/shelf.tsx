@@ -49,7 +49,7 @@ function BookEntry({ book }: { book: Book }) {
       {book.tags.length > 0 && (
         <ul className="mt-2.5 flex flex-wrap gap-x-2 gap-y-1">
           {book.tags.map((tag) => (
-            <li key={tag} className="label text-[0.625rem]">
+            <li key={tag} className="label border border-rule px-1.5 py-0.5 text-[0.625rem]">
               {tag}
             </li>
           ))}
